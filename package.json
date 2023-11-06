@@ -1,6 +1,6 @@
 {
   "name": "gh-npm-spike",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "main": "./dist/my-lib.umd.cjs",
   "module": "./dist/my-lib.js",
