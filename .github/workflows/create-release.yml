@@ -44,8 +44,9 @@ jobs:
 
       - name: Check if tag exists
         run: |
-          TAG=$(curl --silent "https://api.github.com/repos/${{ github.repository }}/releases")
-          echo $TAG
+          tag=${{ steps.set_tag.outputs.tag }}
+          RELEASE_TAG=$(curl --silent "https://api.github.com/repos/${{ github.repository }}/releases/tags/$tag}}")
+          echo $RELEASE_TAG
 
       #- name: Create release
       #  uses: softprops/action-gh-release@v1
