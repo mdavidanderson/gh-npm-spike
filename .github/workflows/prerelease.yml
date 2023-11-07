@@ -34,7 +34,7 @@ jobs:
           echo "Set tag: ${{ steps.set_tag.outputs.tag }}"
 
       - name: Create release
-        uses: softprops/action-gh-release@v1
+      # uses: softprops/action-gh-release@v1
         if: ${{ startsWith(steps.set_tag.outputs.tag, 'v') && steps.set_tag.outputs.tag != 'v' }}
         run: echo "${{ Using tag ${{ steps.set_tag.outputs.tag }}"
       #  with:
