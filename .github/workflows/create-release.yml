@@ -10,7 +10,7 @@ on:
         default: false
 
 jobs:
-  build:
+  create:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -56,9 +56,9 @@ jobs:
           script: |
             core.setFailed("A tag already exists for ${{ steps.set_tag.outputs.tag }}")
 
-      #- name: Create release
-      #  uses: softprops/action-gh-release@v1
-      #  with:
-      #    prerelease: ${{ inputs.prerelease }}
-      #    tag_name: ${{ steps.set_tag.outputs.tag }}
-      #    token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          prerelease: ${{ inputs.prerelease }}
+          tag_name: ${{ steps.set_tag.outputs.tag }}
+          token: ${{ secrets.GITHUB_TOKEN }}

@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - version-check
 
 permissions:
   contents: write
