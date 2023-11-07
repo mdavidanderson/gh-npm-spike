@@ -28,7 +28,7 @@ jobs:
 
       - name: Echo version
         id: echo_version
-        run: echo "Release ${{ steps.extract_version.version }}"
+        run: echo "Release ${{ steps.extract_version.outputs.version }}"
 
       # name: Create release
       #  uses: softprops/action-gh-release@v1
