@@ -44,10 +44,8 @@ jobs:
 
       - name: Create release
         run: |
-          echo "Release ${{ steps.set_tag.outputs.tag }}"
-          echo "Prerelease: ${{ inputs.prerelease }}"
-        #uses: softprops/action-gh-release@v1
-        #with:
-        #  prerelease: ${{ inputs.prerelease }}
-        #  tag_name: ${{ steps.set_tag.outputs.tag }}
-        #  token: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
+        with:
+          prerelease: ${{ inputs.prerelease }}
+          tag_name: ${{ steps.set_tag.outputs.tag }}
+          token: ${{ secrets.GITHUB_TOKEN }}
