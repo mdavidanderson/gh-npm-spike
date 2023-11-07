@@ -21,15 +21,13 @@ jobs:
 
       - name: Extract version
         id: extract_version
-        run: echo "version=$(node -p \"require\('./package.json'\).version\")" >> "$GITHUB_OUTPUT"
-
-      - name: Set version tag
-        id: set_tag
-        run: echo "tag=v${{steps.extract_version.outputs.version}}"
+        run: | 
+          echo "REPO_VERSION=$(node -p \"require\('./package.json'\).version\")" >> "$GITHUB_ENV"
+          echo "$(ls)"
 
       - name: Echo version
         id: echo_version
-        run: echo "Release ${{steps.set_tag.outputs.tag}}"
+        run: echo "Release $REPO_VERSION"
 
       # name: Create release
       #  uses: softprops/action-gh-release@v1
