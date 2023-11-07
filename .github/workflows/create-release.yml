@@ -10,7 +10,7 @@ on:
         default: false
 
 jobs:
-  build:
+  create:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -41,6 +41,20 @@ jobs:
         with:
           script: |
             core.setFailed("An invalid tag was generated: ${{ steps.set_tag.outputs.tag }}")
+
+      - name: Get existing tag
+        id: tag_exists
+        run: |
+          tag=${{ steps.set_tag.outputs.tag }}
+          status=$(curl --silent --write-out '%{http_code}' --output /dev/null "https://api.github.com/repos/${{ github.repository }}/releases/tags/$tag")
+          echo "http-status=$status" >> $GITHUB_OUTPUT
+
+      - name: Check tag-exists-status
+        if: ${{ steps.tag_exists.outputs.http-status == 200 }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.setFailed("A tag already exists for ${{ steps.set_tag.outputs.tag }}")
 
       - name: Create release
         uses: softprops/action-gh-release@v1
