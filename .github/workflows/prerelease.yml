@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - update-outputs
 
 jobs:
   build:
@@ -29,14 +28,12 @@ jobs:
         id: set_tag
         run: |
           TAG="v${{ steps.extract_version.outputs.version }}"
-          TAG1=""
-          echo "tag=$TAG1" >> $GITHUB_OUTPUT
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
 
       - name: Create release
-      # uses: softprops/action-gh-release@v1
         if: ${{ startsWith(steps.set_tag.outputs.tag, 'v') && steps.set_tag.outputs.tag != 'v' }}
-        run: echo "Using tag ${{ steps.set_tag.outputs.tag }}"
-      #  with:
-      #    prerelease: true
-      #    tag_name: ${{ steps.set_tag.outputs.tag }}
-      #    token: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
+        with:
+          prerelease: true
+          tag_name: ${{ steps.set_tag.outputs.tag }}
+          token: ${{ secrets.GITHUB_TOKEN }}
