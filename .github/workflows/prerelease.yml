@@ -24,11 +24,11 @@ jobs:
         run: | 
           VERSION=$(node -p "require('./package.json').version")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "${{ steps.extract_version.version }}"
+  
 
-      #- name: Echo version
-      #  id: echo_version
-      #  run: echo "Release $REPO_VERSION"
+      - name: Echo version
+        id: echo_version
+        run: echo "Release ${{ steps.extract_version.version }}"
 
       # name: Create release
       #  uses: softprops/action-gh-release@v1
