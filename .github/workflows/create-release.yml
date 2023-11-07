@@ -38,10 +38,10 @@ jobs:
 
       - name: Check tag
         if: ${{ !startsWith(steps.set_tag.outputs.tag, 'v') || steps.set_tag.outputs.tag == 'v' }}
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           script: |
-            core.setFailed('An invalid tag was generated: ${{ steps.set_tag.outputs.tag }}
+            core.setFailed("An invalid tag was generated: ${{ steps.set_tag.outputs.tag }"}
 
       - name: Create release
         run: |
