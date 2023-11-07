@@ -33,7 +33,6 @@ jobs:
         id: set_tag
         run: |
           TAG="v${{ steps.extract_version.outputs.version }}"
-          TAG1="v"
           echo "tag=$TAG1" >> $GITHUB_OUTPUT
 
       - name: Check tag
