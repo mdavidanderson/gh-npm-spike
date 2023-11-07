@@ -24,14 +24,12 @@ jobs:
         run: | 
           VERSION=$(node -p "require('./package.json').version")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Extracted ${{ steps.extract_version.outputs.version }}"
-  
 
       - name: Set tag
         id: set_tag
         run: |
-          echo "tag=v${{ steps.extract_version.outputs.version }}" >> $GITHUB_OUTPUT
-          echo "Set tag: ${{ steps.set_tag.outputs.tag }}"
+          TAG="v${{ steps.extract_version.outputs.version }}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
 
       - name: Create release
       # uses: softprops/action-gh-release@v1
