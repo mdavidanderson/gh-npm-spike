@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - refactor-prerelease
 
 permissions:
   contents: write
