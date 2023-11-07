@@ -44,7 +44,7 @@ jobs:
 
       - name: Check if tag exists
         run: |
-          tag=${{ steps.set_tag.outputs.tag }}
+          tag="v0.0.5"
           RELEASE_TAG=$(curl --silent "https://api.github.com/repos/${{ github.repository }}/releases/tags/$tag")
           echo $RELEASE_TAG
 
