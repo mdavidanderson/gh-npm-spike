@@ -1,8 +1,9 @@
 name: prerelease
 on:
-  pull_request
-    #branches:
-    # - main
+  push:
+    branches:
+      - main
+      - update-outputs
 
 jobs:
   build:
@@ -20,7 +21,7 @@ jobs:
 
       - name: Extract version
         id: extract_version
-        run: echo "version=$(node -p require\('./package.json'\).version)" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(node -p \"require\('./package.json'\).version\")" >> "$GITHUB_OUTPUT"
 
       - name: Set version tag
         id: set_tag
