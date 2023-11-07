@@ -1,4 +1,4 @@
-name: prerelease
+name: pre-release
 on:
   push:
     branches:
@@ -19,15 +19,20 @@ jobs:
           node-version: '20.x'
 
       - name: Extract version
-        run: echo "::set-output name=version::$(node -p \"require\('./package.json'\).version\")"
+        id: extract_version
+        run: | 
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Set version tag
+      - name: Set tag
         id: set_tag
-        run: echo "::set-output name=tag::v${{steps.extract_version.outputs.version}}"
+        run: |
+          TAG="v${{ steps.extract_version.outputs.version }}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
 
       - name: Create release
+        if: ${{ startsWith(steps.set_tag.outputs.tag, 'v') && steps.set_tag.outputs.tag != 'v' }}
         uses: softprops/action-gh-release@v1
-        if: startsWith(steps.set_tag.outputs.tag, 'v' )
         with:
           prerelease: true
           tag_name: ${{ steps.set_tag.outputs.tag }}
