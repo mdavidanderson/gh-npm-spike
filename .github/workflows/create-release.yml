@@ -43,7 +43,6 @@ jobs:
             core.setFailed("An invalid tag was generated: ${{ steps.set_tag.outputs.tag }}")
 
       - name: Create release
-        run: |
         uses: softprops/action-gh-release@v1
         with:
           prerelease: ${{ inputs.prerelease }}
