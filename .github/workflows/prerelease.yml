@@ -24,7 +24,7 @@ jobs:
         run: | 
           VERSION=$(node -p "require('./package.json').version")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "${{ github.ref_name }}"
+          echo "${{ github.ref }}"
 
       #- name: Echo version
       #  id: echo_version
