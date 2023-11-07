@@ -2,7 +2,6 @@ name: Create Release
 
 on:
   workflow_call:
-  workflow_dispatch:
     inputs:
       prerelease:
         description: A flag for creating a release as a prerelease
