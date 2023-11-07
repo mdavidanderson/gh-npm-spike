@@ -44,7 +44,7 @@ jobs:
 
       - name: Check if tag exists
         run: |
-          TAG=$(curl --silent "https://api.github.com/repos/${{ github.repository }}/releases/latest")
+          TAG=$(curl --silent "https://api.github.com/repos/${{ github.repository }}/releases")
           echo $TAG
 
       #- name: Create release
