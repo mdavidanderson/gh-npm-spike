@@ -23,16 +23,20 @@ jobs:
         id: extract_version
         run: | 
           VERSION=$(node -p "require('./package.json').version")
-          echo "version=$(node -p \"require('./package.json').version\")" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Extracted ${{ steps.extract_version.outputs.version }}"
   
 
-      - name: Echo version
-        id: echo_version
-        run: echo "Release ${{ steps.extract_version.outputs.version }}"
+      - name: Set tag
+        id: set_tag
+        run: |
+          echo "tag=v${{ steps.extract_version.outputs.version }}" >> $GITHUB_OUTPUT
+          echo "Set tag: ${{ steps.set_tag.outputs.tag }}"
 
-      # name: Create release
-      #  uses: softprops/action-gh-release@v1
-      #  if: startsWith(steps.set_tag.outputs.tag, 'v' )
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        if: ${{ startsWith(steps.set_tag.outputs.tag, 'v') && steps.set_tag.outputs.tag != 'v' }}
+        run: echo "${{ Using tag ${{ steps.set_tag.outputs.tag }}"
       #  with:
       #    prerelease: true
       #    tag_name: ${{ steps.set_tag.outputs.tag }}
