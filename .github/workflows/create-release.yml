@@ -54,7 +54,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            core.setFailed("A tag already exists for ${{ steps.set_tag_outputs.tag }}")
+            core.setFailed("A tag already exists for ${{ steps.set_tag.outputs.tag }}")
 
       #- name: Create release
       #  uses: softprops/action-gh-release@v1
