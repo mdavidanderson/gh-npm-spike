@@ -1,7 +1,8 @@
-name: publish-packages.yml
+name: Publish Package
+
 on:
-  release:
-    types: [published]
+  workflow_call:
+
 jobs:
   build:
     runs-on: ubuntu-latest
