@@ -1,0 +1,19 @@
+name: Create Prerelease and Publish
+
+on:
+  push:
+    branches:
+      - main
+      - refactor-prerelease
+
+permissions:
+  contents: read
+
+jobs:
+  create-prerelease:
+    uses: ./.github/workflows/create-release.yml
+
+  publish-package:
+    needs: [create-prerelease]
+    if: ${{ !failure() && !cancelled() }}
+    uses: ./.github/workflows/publish-package.yml

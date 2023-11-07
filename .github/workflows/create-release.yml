@@ -1,8 +1,13 @@
-name: pre-release
+name: Create Release
+
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      prerelease:
+        description: A flag for creating a release as a prerelease
+        type: boolean
+        required: false
+        default: true
 
 jobs:
   build:
@@ -20,7 +25,7 @@ jobs:
 
       - name: Extract version
         id: extract_version
-        run: | 
+        run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
@@ -32,8 +37,11 @@ jobs:
 
       - name: Create release
         if: ${{ startsWith(steps.set_tag.outputs.tag, 'v') && steps.set_tag.outputs.tag != 'v' }}
-        uses: softprops/action-gh-release@v1
-        with:
-          prerelease: true
-          tag_name: ${{ steps.set_tag.outputs.tag }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Release ${{ steps.set_tag.outputs.tag }}"
+          echo "Prerelease: ${{ inputs.prerelease }}"
+        #uses: softprops/action-gh-release@v1
+        #with:
+        #  prerelease: ${{ inputs.prerelease }}
+        #  tag_name: ${{ steps.set_tag.outputs.tag }}
+        #  token: ${{ secrets.GITHUB_TOKEN }}
