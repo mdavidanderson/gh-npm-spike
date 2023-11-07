@@ -7,7 +7,7 @@ on:
         description: A flag for creating a release as a prerelease
         type: boolean
         required: false
-        default: true
+        default: false
 
 jobs:
   build:
@@ -33,10 +33,17 @@ jobs:
         id: set_tag
         run: |
           TAG="v${{ steps.extract_version.outputs.version }}"
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          TAG1="v"
+          echo "tag=$TAG1" >> $GITHUB_OUTPUT
+
+      - name: Check tag
+        if: ${{ !startsWith(steps.set_tag.outputs.tag, 'v') || steps.set_tag.outputs.tag == 'v' }}
+        uses: actions/github-script@v3
+        with:
+          script: |
+            core.setFailed('An invalid tag was generated: ${{ steps.set_tag.outputs.tag }}
 
       - name: Create release
-        if: ${{ startsWith(steps.set_tag.outputs.tag, 'v') && steps.set_tag.outputs.tag != 'v' }}
         run: |
           echo "Release ${{ steps.set_tag.outputs.tag }}"
           echo "Prerelease: ${{ inputs.prerelease }}"

@@ -13,6 +13,8 @@ permissions:
 jobs:
   create-prerelease:
     uses: ./.github/workflows/create-release.yml
+    with:
+      prerelease: true
 
   publish-package:
     needs: [create-prerelease]
