@@ -22,9 +22,9 @@ jobs:
       - name: Extract version
         id: extract_version
         run: | 
-          echo "REPO_VERSION=$(node -p \"require\('./package.json'\).version\")" >> "$GITHUB_ENV"
           VERSION=$(node -p "require('./package.json').version")
-          echo $VERSION
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "${{ github.ref_name }}"
 
       #- name: Echo version
       #  id: echo_version
