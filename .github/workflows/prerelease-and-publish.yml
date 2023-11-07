@@ -7,7 +7,7 @@ on:
       - refactor-prerelease
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   create-prerelease:
