@@ -9,11 +9,11 @@ on:
         required: false
         default: false
 
+jobs:
+  create:
     outputs:
       updated_sha: ${{ steps.update_sha.outputs.sha }}
 
-jobs:
-  create:
     runs-on: ubuntu-latest
     permissions:
       contents: write
