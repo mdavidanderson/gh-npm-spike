@@ -30,9 +30,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cat package-lock.json
           npm install
-          cat package-lock.json
+          echo $(git diff HEAD package-lock.json)
 
       - name: Update Package Version
         run: npm version patch
