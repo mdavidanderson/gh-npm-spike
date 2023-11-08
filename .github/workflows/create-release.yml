@@ -8,13 +8,18 @@ on:
         type: boolean
         required: false
         default: false
+    outputs:
+      updated_sha:
+        description: "An updated SHA or the SHA of the current commit"
+        value: ${{ jobs.create.outputs.sha }}
 
 jobs:
   create:
-    outputs:
-      updated_sha: ${{ steps.update_sha.outputs.sha }}
-
     runs-on: ubuntu-latest
+
+    outputs:
+      sha: ${{ steps.update_sha.outputs.sha }}
+
     permissions:
       contents: write
     steps:
@@ -48,8 +53,6 @@ jobs:
         run: |
           sha=$(git rev-parse HEAD)
           echo "sha=$sha" >> $GITHUB_OUTPUT
-          echo $sha
-        
 
       - name: Extract version
         id: extract_version
