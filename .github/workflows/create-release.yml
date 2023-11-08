@@ -31,8 +31,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-        npm install
-        git status
+          npm install
+          git status
 
       - name: Update Package Version
         run: npm version patch
