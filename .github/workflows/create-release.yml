@@ -23,6 +23,10 @@ jobs:
         with:
           node-version: '20.x'
 
+      - name: Update Package Version
+        run: |
+          npm version patch
+
       - name: Extract version
         id: extract_version
         run: |
