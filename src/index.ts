@@ -1,2 +1,2 @@
-export * from './sum';
-export * from './subtract';
+export * as sum from './sum';
+export * as subtract from './subtract';
