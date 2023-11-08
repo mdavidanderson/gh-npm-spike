@@ -31,7 +31,8 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-          echo $(git diff HEAD package-lock.json)
+          git add .
+          git commit -m "Update dependencies"
 
       - name: Update Package Version
         run: npm version patch
