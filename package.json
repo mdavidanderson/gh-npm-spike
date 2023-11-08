@@ -4,13 +4,13 @@
     "type": "git",
     "url": "git+https://github.com/mdavidanderson/gh-npm-spike.git"
   },
-  "version": "0.0.6",
+  "version": "0.0.7",
   "type": "module",
   "main": "./dist/my-lib.umd.cjs",
   "module": "./dist/my-lib.js",
-  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/my-lib.js",
       "require": "./dist/my-lib.umd.cjs"
     }
