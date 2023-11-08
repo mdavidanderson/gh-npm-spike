@@ -31,11 +31,9 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-          git add .
-          git commit -m "Update dependencies"
 
       - name: Update Package Version
-        run: npm version patch
+        run: npm version patch --force
 
       - name: Push changes
         uses: ad-m/github-push-action@master
