@@ -20,4 +20,4 @@ jobs:
     if: ${{ !failure() && !cancelled() }}
     uses: ./.github/workflows/publish-package.yml
     with:
-      sha: ${{ needs.create-prerelease.outputs.sha }}
+      sha: ${{ needs.create-prerelease.outputs.updated_sha }}

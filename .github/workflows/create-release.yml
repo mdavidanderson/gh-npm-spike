@@ -10,7 +10,7 @@ on:
         default: false
 
     outputs:
-      update_sha: ${{ steps.update-sha.outputs.sha }}
+      updated_sha: ${{ steps.update_sha.outputs.sha }}
 
 jobs:
   create:
@@ -44,7 +44,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update SHA
-        id: update-sha
+        id: update_sha
         run: |
           sha=$(git rev-parse HEAD)
           echo "sha=$sha" >> $GITHUB_OUTPUT
