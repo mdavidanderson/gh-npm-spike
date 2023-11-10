@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
 
     if: ${{ github.events.head_commit.author.email != 'bump-version[bot]@users.noreply.github.com' }}
 
