@@ -4,7 +4,7 @@
     "type": "git",
     "url": "git+https://github.com/mdavidanderson/gh-npm-spike.git"
   },
-  "version": "0.0.14",
+  "version": "0.0.15",
   "type": "module",
   "main": "./dist/my-lib.umd.cjs",
   "module": "./dist/my-lib.js",
