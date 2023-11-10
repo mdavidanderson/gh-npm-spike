@@ -73,9 +73,6 @@ jobs:
       - name: Rename Branch and Create PR
         run: |
           git branch -m ${{ steps.set_tag.outputs.tag }}-branch
-          git branch --list
-          git status
-          git log --pretty=oneline
           git push -u origin ${{ steps.set_tag.outputs.tag }}-branch
           gh pr create -B main -H ${{ steps.set_tag.outputs.tag }} --fill-first
 
