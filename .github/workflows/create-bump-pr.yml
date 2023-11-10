@@ -74,7 +74,7 @@ jobs:
         run: |
           git branch -m ${{ steps.set_tag.outputs.tag }}-branch
           git push origin ${{ steps.set_tag.outputs.tag }}-branch
-          gh pr create -B main -H ${{ steps.set_tag.outputs.tag }} --fill-first
+          gh pr create -B "main" --fill-first
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
