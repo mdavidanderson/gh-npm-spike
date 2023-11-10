@@ -11,7 +11,7 @@ jobs:
     permissions:
       contents: write
 
-    if: ${{ github.events.head_commit.author.email != "bump-version[bot]@users.noreply.github.com" }}
+    if: ${{ github.events.head_commit.author.email != 'bump-version[bot]@users.noreply.github.com' }}
 
     steps:
       - name: Checkout repository
