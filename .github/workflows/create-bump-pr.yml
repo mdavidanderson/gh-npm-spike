@@ -76,7 +76,8 @@ jobs:
           git branch --list
           git status
           git log --pretty=oneline
-          gh pr create --base main --head ${{ steps.set_tag.outputs.tag }} --fill-first
+          git rev-parse ${{ github.sha }}
+          gh pr create -B main -H ${{ steps.set_tag.outputs.tag }} --fill-first
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
