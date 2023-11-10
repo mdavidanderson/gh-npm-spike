@@ -12,7 +12,7 @@ jobs:
       contents: write
       pull-requests: write
 
-    if: ${{ github.events.head_commit.author.email != 'bump-version[bot]@users.noreply.github.com' }}
+    if: ${{ ! contains( github.events.head_commit.message, 'bump-version[bot]@users.noreply.github.com') }}
 
     steps:
       - name: Checkout repository
@@ -22,8 +22,7 @@ jobs:
 
       - name: Setup Git
         run: |
-          echo ${{ github.events.head_commit.author.email }}
-          echo ${{ toJson(github) }}
+          echo ${{ github.events.head_commit.message }}
           git config --local user.email "bump-version[bot]@users.noreply.github.com"
           git config --local user.name "bump-version[bot]"
           git checkout -b bump-version
