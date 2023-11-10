@@ -76,7 +76,7 @@ jobs:
           git branch --list
           git status
           git log --pretty=oneline
-          git rev-parse ${{ github.sha }}
+          git push -u origin ${{ steps.set_tag.outputs.tag }}
           gh pr create -B main -H ${{ steps.set_tag.outputs.tag }} --fill-first
 
         env:
