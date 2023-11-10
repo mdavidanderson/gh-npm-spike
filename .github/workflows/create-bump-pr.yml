@@ -70,7 +70,4 @@ jobs:
       - name: Rename Branch and Create PR
         run: |
           git branch -m ${{ steps.set_tag.outputs.tag }}
-          gh pr create --base main --head ${{ steps.set_tag.outputs.tag }} --fill-first" 
-
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          gh pr create --base main --head ${{ steps.set_tag.outputs.tag }} --fill-first"
