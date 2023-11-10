@@ -75,6 +75,7 @@ jobs:
           git branch -m ${{ steps.set_tag.outputs.tag }}
           git branch --list
           git status
+          git log --pretty=oneline
           gh pr create --base main --head ${{ steps.set_tag.outputs.tag }} --fill-first
 
         env:
