@@ -1,34 +1,19 @@
 name: Create Prerelease and Publish
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
 
 permissions:
   contents: write
   packages: write
 
 jobs:
-  run-jobs-check:
-    runs-on: ubuntu-latest
-    outputs:
-      run: ${{ steps.set-output.outputs.run }}
-    steps:
-      - name: Set flag for running jobs
-        id: set-output
-        run: |
-          flag=${{ contains( github.event.head_commit.message, 'bump-version[bot]@users.noreply.github.com') }}
-          echo "run=$flag" >> $GITHUB_OUTPUT
-
   create-prerelease:
-    needs: [run-jobs-check]
-    if: ${{ needs.run-jobs-check.outputs.run == 'true' }}
     uses: ./.github/workflows/create-release.yml
     with:
       prerelease: true
 
   publish-package:
-    needs: [run-jobs-check, create-prerelease]
-    if: ${{ needs.run-jobs-check.outputs.run == 'true' && !failure() && !cancelled() }}
+    needs: [create-prerelease]
+    if: ${{ !failure() && !cancelled() }}
     uses: ./.github/workflows/publish-package.yml
