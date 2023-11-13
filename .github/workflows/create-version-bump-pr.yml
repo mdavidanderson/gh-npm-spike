@@ -11,68 +11,68 @@ jobs:
       pull-requests: write
 
     steps:
-       - name: Test create pr
-         run: |
-           echo "::error::An error occurred when creating pr"
-           exit 1
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#        with:
-#          fetch-depth: 0
-#
-#      - name: Setup Git
-#        run: |
-#          echo ${{ github.event.head_commit.message }}
-#          git config --local user.email "bump-version[bot]@users.noreply.github.com"
-#          git config --local user.name "bump-version[bot]"
-#          git checkout -b bump-version
-#
-#      - name: Setup node
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: '20.x'
-#
-#      - name: Install dependencies
-#        run: |
-#          npm install
-#
-#      - name: Update Package Version
-#        run: |
-#          npm version patch
-#
-#      - name: Extract version
-#        id: extract_version
-#        run: |
-#          VERSION=$(node -p "require('./package.json').version")
-#          echo "version=$VERSION" >> $GITHUB_OUTPUT
-#
-#      - name: Set tag
-#        id: set_tag
-#        run: |
-#          TAG="v${{ steps.extract_version.outputs.version }}"
-#          echo "tag=$TAG" >> $GITHUB_OUTPUT
-#
-#      - name: Check tag
-#        if: ${{ !startsWith(steps.set_tag.outputs.tag, 'v') || steps.set_tag.outputs.tag == 'v' }}
-#        run: echo "::error A tag already exists for ${{ steps.set_tag.outputs.tag }}"
-#
-#      - name: Get existing tag
-#        id: tag_exists
-#        run: |
-#          tag=${{ steps.set_tag.outputs.tag }}
-#          status=$(curl --silent --write-out '%{http_code}' --output /dev/null "https://api.github.com/repos/${{ github.repository }}/releases/tags/$tag")
-#          echo "http-status=$status" >> $GITHUB_OUTPUT
-#
-#      - name: Check tag-exists-status
-#        if: ${{ steps.tag_exists.outputs.http-status == 200 }}
-#        run: |
-#            echo "::error A tag already exists for ${{ steps.set_tag.outputs.tag }}"
-#
-#      - name: Rename Branch and Create PR
-#        run: |
-#          git branch -m ${{ steps.set_tag.outputs.tag }}-branch
-#          git push origin ${{ steps.set_tag.outputs.tag }}-branch
-#          gh pr create -B "main" --fill-first
-#
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Git
+        run: |
+          echo ${{ github.event.head_commit.message }}
+          git config --local user.email "bump-version[bot]@users.noreply.github.com"
+          git config --local user.name "bump-version[bot]"
+          git checkout -b bump-version
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Update Package Version
+        run: |
+          npm version prerelease
+
+      - name: Extract version
+        id: extract_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Set tag
+        id: set_tag
+        run: |
+          TAG="v${{ steps.extract_version.outputs.version }}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Check tag
+        if: ${{ !startsWith(steps.set_tag.outputs.tag, 'v') || steps.set_tag.outputs.tag == 'v' }}
+        run: |
+          echo "::error::A tag already exists for ${{ steps.set_tag.outputs.tag }}"
+          exit 1
+        
+
+      - name: Get existing tag
+        id: tag_exists
+        run: |
+          tag=${{ steps.set_tag.outputs.tag }}
+          status=$(curl --silent --write-out '%{http_code}' --output /dev/null "https://api.github.com/repos/${{ github.repository }}/releases/tags/$tag")
+          echo "http-status=$status" >> $GITHUB_OUTPUT
+
+      - name: Check tag-exists-status
+        if: ${{ steps.tag_exists.outputs.http-status == 200 }}
+        run: |
+            echo "::error::A tag already exists for ${{ steps.set_tag.outputs.tag }}"
+            exit 1
+
+      - name: Rename Branch and Create PR
+        run: |
+          git branch -m ${{ steps.set_tag.outputs.tag }}-branch
+          git push origin ${{ steps.set_tag.outputs.tag }}-branch
+          gh pr create -B "main" --fill-first
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
