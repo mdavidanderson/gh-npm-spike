@@ -14,6 +14,7 @@ jobs:
        - name: Test create pr
          run: |
            echo "::error::An error occurred when creating pr"
+           exit 1
 #      - name: Checkout repository
 #        uses: actions/checkout@v4
 #        with:
