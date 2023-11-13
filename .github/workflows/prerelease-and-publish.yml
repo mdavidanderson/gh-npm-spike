@@ -14,12 +14,12 @@ env:
 
 jobs:
   create-prerelease:
-    if: ${{ run-jobs }}
+    if: ${{ env.run-jobs }}
     uses: ./.github/workflows/create-release.yml
     with:
       prerelease: true
 
   publish-package:
     needs: [create-prerelease]
-    if: ${{ run-jobs && !failure() && !cancelled() }}
+    if: ${{ env.run-jobs && !failure() && !cancelled() }}
     uses: ./.github/workflows/publish-package.yml
