@@ -9,17 +9,32 @@ permissions:
   contents: write
   packages: write
 
-env:
-  run_jobs: ${{ contains( github.event.head_commit.message, 'bump-version[bot]@users.noreply.github.com') }}
-
 jobs:
+  run-jobs-check:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.set-output.outputs.run }}
+    steps:
+      - name: Set flag for running jobs
+        id: set-output
+        run: |
+          flag=${{ contains( github.event.head_commit.message, 'bump-version[bot]@users.noreply.github.com') }}
+          echo "run=$flag" >> $GITHUB_OUTPUT
+
   create-prerelease:
-    if: ${{ env.run_jobs }}
+    needs: [run-jobs-check]
+    if: ${{ needs.run-jobs-check.outputs.run }}
     uses: ./.github/workflows/create-release.yml
     with:
       prerelease: true
 
   publish-package:
-    needs: [create-prerelease]
-    if: ${{ env.run_jobs && !failure() && !cancelled() }}
+    needs: [run-jobs-check, create-prerelease]
+    if: |
+      ${{
+        needs.run-jobs-check.outputs.run
+        !failure() && 
+        !cancelled() 
+      }}
+
     uses: ./.github/workflows/publish-package.yml
