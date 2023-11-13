@@ -33,10 +33,7 @@ jobs:
 
       - name: Check tag
         if: ${{ !startsWith(steps.set_tag.outputs.tag, 'v') || steps.set_tag.outputs.tag == 'v' }}
-        uses: actions/github-script@v6
-        with:
-          script: |
-            core.setFailed("An invalid tag was generated: ${{ steps.set_tag.outputs.tag }}")
+        run: echo "::error A tag already exists for ${{ steps.set_tag.outputs.tag }}"
 
       - name: Get existing tag status
         id: tag_exists
@@ -47,7 +44,6 @@ jobs:
 
       - name: Check tag-exists-status
         if: ${{ steps.tag_exists.outputs.http-status == 200 }}
-        uses: actions/github-script@v6
         run: echo "::error A tag already exists for ${{ steps.set_tag.outputs.tag }}"
 
       - name: Create release
