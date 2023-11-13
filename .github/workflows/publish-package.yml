@@ -2,37 +2,16 @@ name: Publish Package
 
 on:
   workflow_call:
-    inputs:
-      sha:
-        description: SHA to use for checkout
-        type: string
-        required: false
-        default: ''
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+
     steps:
-
-      - name: Use passed SHA
-        id: use-sha
-        if: ${{ inputs.sha != '' }}
-        run: |
-          echo "sha=${{ inputs.sha }}" >> $GITHUB_ENV
-
-      - name: Use current commit's SHA
-        id: use-current-sha
-        if: ${{ inputs.sha == '' }}
-        run: |
-          sha=$(git rev-parse HEAD)
-          echo "sha=$sha" >> $GITHUB_ENV
-
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ env.sha }}
-          fetch-depth: 0
 
       - uses: actions/setup-node@v3
         with:
