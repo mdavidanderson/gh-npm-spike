@@ -23,18 +23,12 @@ jobs:
           echo "is-bumper-version-author=$flag" >> $GITHUB_OUTPUT
 
   create-version-bump-pr:
-    runs-on: ubuntu-latest
     needs: [bump-version-check]
     if: ${{ needs.bump-version-check.outputs.is-bump-version-author == 'false' }}
-    steps:
-      - name: create-version-bump-pr-test
-        run: echo "Create version bump pr"
+    uses: ./.github/workflows/create-version-bump-pr.yml
 
   create-prerelease-and-publish:
-    runs-on: ubuntu-latest
     needs: [bump-version-check]
     if: ${{ needs.bump-version-check.outputs.is-bump-version-author == 'true' }}
-    steps:
-      - name: create-prerelease-and-publish-test
-        run: echo "Create prerelease and publish"
+    uses: ./.github/workflows/prerelease-and-publish.yml
 
