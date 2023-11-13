@@ -21,25 +21,14 @@ jobs:
           flag=${{ contains( github.event.head_commit.message, 'bump-version[bot]@users.noreply.github.com') }}
           echo "run=$flag" >> $GITHUB_OUTPUT
 
-  test-echo:
-    needs: [run-jobs-check]
-    runs-on: ubuntu-latest
-    steps:
-      - name: echo
-        run: |
-          echo ${{ needs.run-jobs-check.outputs.run }}
-          echo ${{ needs.run-jobs.check.outputs.run == true }}
-          echo ${{ needs.run-jobs.check.outputs.run == false }}
-          
-
   create-prerelease:
     needs: [run-jobs-check]
-    if: ${{ needs.run-jobs-check.outputs.run }}
+    if: ${{ needs.run-jobs-check.outputs.run == 'true' }}
     uses: ./.github/workflows/create-release.yml
     with:
       prerelease: true
 
   publish-package:
     needs: [run-jobs-check, create-prerelease]
-    if: ${{ needs.run-jobs-check.outputs.run && !failure() && !cancelled() }}
+    if: ${{ needs.run-jobs-check.outputs.run == 'true' && !failure() && !cancelled() }}
     uses: ./.github/workflows/publish-package.yml
