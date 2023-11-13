@@ -33,7 +33,9 @@ jobs:
 
       - name: Check tag
         if: ${{ !startsWith(steps.set_tag.outputs.tag, 'v') || steps.set_tag.outputs.tag == 'v' }}
-        run: echo "::error A tag already exists for ${{ steps.set_tag.outputs.tag }}"
+        run: |
+          echo "::error A tag already exists for ${{ steps.set_tag.outputs.tag }}"
+          exit 1
 
       - name: Get existing tag status
         id: tag_exists
@@ -44,7 +46,9 @@ jobs:
 
       - name: Check tag-exists-status
         if: ${{ steps.tag_exists.outputs.http-status == 200 }}
-        run: echo "::error A tag already exists for ${{ steps.set_tag.outputs.tag }}"
+        run: | 
+          echo "::error A tag already exists for ${{ steps.set_tag.outputs.tag }}"
+          exit 1
 
       - name: Create release
         uses: softprops/action-gh-release@v1
