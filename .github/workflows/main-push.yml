@@ -19,6 +19,7 @@ jobs:
         id: set-output
         run: |
           flag=${{ contains(github.event.head_commit.message, 'bump-version[bot]@users.noreply.github.com') }}
+          flag=${{ true }}
           echo "is-bumper-version-author=$flag" >> $GITHUB_OUTPUT
 
   create-version-bump-pr:
