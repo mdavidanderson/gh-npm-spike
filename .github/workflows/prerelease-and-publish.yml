@@ -32,7 +32,7 @@ jobs:
     needs: [run-jobs-check, create-prerelease]
     if: |
       ${{
-        needs.run-jobs-check.outputs.run
+        needs.run-jobs-check.outputs.run &&
         !failure() && 
         !cancelled() 
       }}
