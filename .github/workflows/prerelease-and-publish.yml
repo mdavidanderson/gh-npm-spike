@@ -10,16 +10,16 @@ permissions:
   packages: write
 
 env:
-  run-jobs: ${{ contains( github.event.head_commit.message, 'bump-version[bot]@users.noreply.github.com') }}
+  run_jobs: ${{ contains( github.event.head_commit.message, 'bump-version[bot]@users.noreply.github.com') }}
 
 jobs:
   create-prerelease:
-    if: ${{ env.run-jobs }}
+    if: ${{ env.run_jobs }}
     uses: ./.github/workflows/create-release.yml
     with:
       prerelease: true
 
   publish-package:
     needs: [create-prerelease]
-    if: ${{ env.run-jobs && !failure() && !cancelled() }}
+    if: ${{ env.run_jobs && !failure() && !cancelled() }}
     uses: ./.github/workflows/publish-package.yml
