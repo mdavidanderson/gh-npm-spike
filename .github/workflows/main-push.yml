@@ -36,5 +36,5 @@ jobs:
     if: ${{ needs.bump-version-check.outputs.is-bump-version-author == 'true' }}
     steps:
       - name: create-prerelease-and-publish-test
-        run: echo "Create prerelease and publish
+        run: echo "Create prerelease and publish"
 
