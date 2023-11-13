@@ -16,46 +16,43 @@ jobs:
     permissions:
       contents: write
     steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
-#      - name: Extract version
-#        id: extract_version
-#        run: |
-#          VERSION=$(node -p "require('./package.json').version")
-#          echo "version=$VERSION" >> $GITHUB_OUTPUT
-#
-#      - name: Set tag
-#        id: set_tag
-#        run: |
-#          TAG="v${{ steps.extract_version.outputs.version }}"
-#          echo "tag=$TAG" >> $GITHUB_OUTPUT
-#
-#      - name: Check tag
-#        if: ${{ !startsWith(steps.set_tag.outputs.tag, 'v') || steps.set_tag.outputs.tag == 'v' }}
-#        run: |
-#          echo "::error::A tag already exists for ${{ steps.set_tag.outputs.tag }}"
-#          exit 1
-#
-#      - name: Get existing tag status
-#        id: tag_exists
-#        run: |
-#          tag=${{ steps.set_tag.outputs.tag }}
-#          status=$(curl --silent --write-out '%{http_code}' --output /dev/null "https://api.github.com/repos/${{ github.repository }}/releases/tags/$tag")
-#          echo "http-status=$status" >> $GITHUB_OUTPUT
-#
-#      - name: Check tag-exists-status
-#        if: ${{ steps.tag_exists.outputs.http-status == 200 }}
-#        run: |
-#          echo "::error::A tag already exists for ${{ steps.set_tag.outputs.tag }}"
-#          exit 1
-#
-#      - name: Create release
-#        uses: softprops/action-gh-release@v1
-#        with:
-#          prerelease: ${{ inputs.prerelease }}
-#          tag_name: ${{ steps.set_tag.outputs.tag }}
-#          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Test create-release
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract version
+        id: extract_version
         run: |
-          echo "create release test"
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Set tag
+        id: set_tag
+        run: |
+          TAG="v${{ steps.extract_version.outputs.version }}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Check tag
+        if: ${{ !startsWith(steps.set_tag.outputs.tag, 'v') || steps.set_tag.outputs.tag == 'v' }}
+        run: |
+          echo "::error::A tag already exists for ${{ steps.set_tag.outputs.tag }}"
+          exit 1
+
+      - name: Get existing tag status
+        id: tag_exists
+        run: |
+          tag=${{ steps.set_tag.outputs.tag }}
+          status=$(curl --silent --write-out '%{http_code}' --output /dev/null "https://api.github.com/repos/${{ github.repository }}/releases/tags/$tag")
+          echo "http-status=$status" >> $GITHUB_OUTPUT
+
+      - name: Check tag-exists-status
+        if: ${{ steps.tag_exists.outputs.http-status == 200 }}
+        run: |
+          echo "::error::A tag already exists for ${{ steps.set_tag.outputs.tag }}"
+          exit 1
+
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          prerelease: ${{ inputs.prerelease }}
+          tag_name: ${{ steps.set_tag.outputs.tag }}
+          token: ${{ secrets.GITHUB_TOKEN }}
