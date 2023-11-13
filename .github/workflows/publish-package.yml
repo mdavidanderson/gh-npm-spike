@@ -26,3 +26,4 @@ jobs:
       - name: Test Publish Package
         run: |
           echo "::error::An error occurred during publish-package"
+          exit 1

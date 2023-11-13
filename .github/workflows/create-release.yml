@@ -58,5 +58,4 @@ jobs:
 #          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Test create-release
         run: |
-          echo "::error::An error occurred while create-release" 
-          exit 1
+          echo "create release test"
