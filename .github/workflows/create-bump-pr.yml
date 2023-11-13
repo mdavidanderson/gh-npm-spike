@@ -54,10 +54,7 @@ jobs:
 
       - name: Check tag
         if: ${{ !startsWith(steps.set_tag.outputs.tag, 'v') || steps.set_tag.outputs.tag == 'v' }}
-        uses: actions/github-script@v6
-        with:
-          script: |
-            core.setFailed("An invalid tag was generated: ${{ steps.set_tag.outputs.tag }}")
+        run: echo "::error A tag already exists for ${{ steps.set_tag.outputs.tag }}"
 
       - name: Get existing tag
         id: tag_exists

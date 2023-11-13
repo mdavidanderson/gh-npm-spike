@@ -7,17 +7,52 @@ on:
         description: A flag for creating a release as a prerelease
         type: boolean
         required: false
-        default: true
+        default: false
+    outputs:
+      updated_sha:
+        description: "An updated SHA or the SHA of the current commit"
+        value: ${{ jobs.create.outputs.sha }}
 
 jobs:
   create:
     runs-on: ubuntu-latest
+
+    outputs:
+      sha: ${{ steps.update_sha.outputs.sha }}
 
     permissions:
       contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Setup Git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Update Package Version
+        run: npm version patch --force
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update SHA
+        id: update_sha
+        run: |
+          sha=$(git rev-parse HEAD)
+          echo "sha=$sha" >> $GITHUB_OUTPUT
 
       - name: Extract version
         id: extract_version
@@ -38,7 +73,7 @@ jobs:
           script: |
             core.setFailed("An invalid tag was generated: ${{ steps.set_tag.outputs.tag }}")
 
-      - name: Get existing tag status
+      - name: Get existing tag
         id: tag_exists
         run: |
           tag=${{ steps.set_tag.outputs.tag }}
@@ -48,7 +83,9 @@ jobs:
       - name: Check tag-exists-status
         if: ${{ steps.tag_exists.outputs.http-status == 200 }}
         uses: actions/github-script@v6
-        run: echo "::error A tag already exists for ${{ steps.set_tag.outputs.tag }}"
+        with:
+          script: |
+            core.setFailed("A tag already exists for ${{ steps.set_tag.outputs.tag }}")
 
       - name: Create release
         uses: softprops/action-gh-release@v1
